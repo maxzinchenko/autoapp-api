@@ -1,15 +1,16 @@
-import { Controller, Body, Param, Get, Post, Put } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags, ApiBody } from '@nestjs/swagger';
+import { Controller, Body, Param, Get, Post, Put, Delete } from '@nestjs/common';
+import { ApiOperation, ApiTags, ApiBody } from '@nestjs/swagger';
 
 import { UserService } from './user.service';
 import { UserDTO } from './dto/users.dto';
 import { User } from './user.entity';
 
-@ApiBearerAuth()
 @ApiTags('users')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) {
+    this.userService = userService;
+  }
 
   @Get()
   @ApiOperation({ summary: 'Get all users' })
@@ -19,23 +20,30 @@ export class UserController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get specific user' })
+  @ApiOperation({ summary: 'Get a user by id' })
   @ApiBody({ type: UserDTO, required: false })
   async findOne(@Param('id') id: string): Promise<User> {
-    return await this.userService.findById(id);
+    return await this.userService.findOneById(id);
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create user' })
+  @ApiOperation({ summary: 'Create a user' })
   @ApiBody({ type: UserDTO })
   async create(@Body() data: UserDTO): Promise<User> {
     return await this.userService.create(data);
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Update user' })
+  @ApiOperation({ summary: 'Update a user' })
   @ApiBody({ type: UserDTO })
   async update(@Param('id') id: string, @Body() data: UserDTO): Promise<User> {
     return await this.userService.update(id, data);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Destroy a user' })
+  @ApiBody({ type: UserDTO, required: false })
+  async destroy(@Param('id') id: string): Promise<{ id: string }> {
+    return await this.userService.destroy(id);
   }
 }

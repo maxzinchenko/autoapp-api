@@ -2,7 +2,7 @@
 
 Using the [Nest](https://github.com/nestjs/nest) framework with [Sequelize](https://github.com/sequelize/sequelize) ORM.
 
-## Installation
+## Packages installation
 
 ```bash
 $ yarn
@@ -11,7 +11,7 @@ $ yarn
 ## Running the app
 
 ```bash
-# development
+# development mode
 $ yarn start
 
 # watch mode
@@ -29,4 +29,11 @@ $ yarn test
 
 # test coverage
 $ yarn test:cov
+```
+
+## Checking for the code style exceptions
+
+```bash
+# eslint check
+$ yarn lint
 ```
