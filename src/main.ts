@@ -1,22 +1,19 @@
 import 'dotenv/config';
-import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 
+import { swaggerSetup } from './swagger';
 import { AppModule } from './app.module';
+import { ExceptionsFilter } from './exceptions.filter';
 
 const bootstrap = async (port: string | number = 3000): Promise<void> => {
   const app = await NestFactory.create(AppModule);
-
-  const options = new DocumentBuilder()
-    .setTitle('Autoapp')
-    .setDescription('The Autoapp API description')
-    .setVersion('1.0')
-    .build();
-
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
-
   app.setGlobalPrefix('api/v1');
+
+  swaggerSetup(app);
+
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new ExceptionsFilter(httpAdapter));
+
   await app.listen(port);
 
   // eslint-disable-next-line no-console

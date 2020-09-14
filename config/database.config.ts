@@ -12,7 +12,7 @@ const commonConfig: Options = {
   host: 'localhost',
   port: 5432,
   dialect: 'postgres',
-  logging: true,
+  logging: false,
   operatorsAliases: Op
 };
 
@@ -30,6 +30,7 @@ export const databaseConfig: DatabaseConfig = {
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME_PRODUCTION,
-    host: process.env.DB_HOST
+    host: process.env.DB_HOST,
+    port: +process.env.DB_PORT
   }
 };

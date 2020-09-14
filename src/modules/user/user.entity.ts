@@ -1,22 +1,19 @@
-import { Table, Column, IsUUID, PrimaryKey, AllowNull, Unique, Length, Index, IsUrl, DefaultScope, Scopes, Model } from 'sequelize-typescript';
-import { ApiProperty } from '@nestjs/swagger';
+import { Table, Column, Default, IsUUID, PrimaryKey, AllowNull, Unique, Length, Index, IsUrl, Is, DefaultScope, Scopes, Model, DataType } from 'sequelize-typescript';
 
 @DefaultScope(() => ({
-  attributes: { exclude: ['createdAt', 'updatedAt'] }
+  attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] }
 }))
 
-// @Scopes(() => ({
-//   full: {
-//     include: [Manufacturer]
-//   },
-//   yellow: {
-//     where: { primaryColor: 'yellow' }
-//   }
-// }))
+@Scopes(() => ({
+  full: {
+    attributes: { exclude: [] }
+  }
+}))
 
 @Table({
   tableName: 'users',
   modelName: 'User',
+  paranoid: true,
   timestamps: true,
   indexes: [{
     unique: true,
@@ -26,41 +23,39 @@ import { ApiProperty } from '@nestjs/swagger';
 export class User extends Model<User> {
   @IsUUID(4)
   @PrimaryKey
-  @Column
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
   public readonly id: string;
 
-  @ApiProperty({ example: 'qwery', description: 'Username', required: true, type: 'string' })
-  @Length({ min: 4, max: 25 })
+  @Is(/^[\dA-Za-z]+$/)
+  @Length({ min: 5, max: 25 })
   @AllowNull(false)
   @Unique
   @Index
-  @Column
+  @Column(DataType.STRING(25))
   public username: string;
 
-  @ApiProperty({ example: '5555555555', description: 'Phone', required: true, type: 'string' })
-  @Length({ min: 11, max: 14 })
+  @Is(/^(\+|)\d*$/g)
+  @Length({ min: 10, max: 13 })
   @AllowNull(false)
   @Unique
   @Index
-  @Column
+  @Column(DataType.STRING(13))
   public phone: string;
 
-  @ApiProperty({ example: 'file', description: 'Avatar', required: false, type: 'file' })
   @IsUrl
   @Length({ min: 0, max: 300 })
   @AllowNull
-  @Column
+  @Column(DataType.STRING(300))
   public avatar: string;
 
-  @ApiProperty({ example: 'John', description: 'First Name', required: false, type: 'string' })
   @Length({ min: 3, max: 50 })
   @AllowNull
-  @Column
+  @Column(DataType.STRING(50))
   public firstName: string;
 
-  @ApiProperty({ example: 'Smith', description: 'Last Name', required: false, type: 'string' })
   @Length({ min: 3, max: 50 })
   @AllowNull
-  @Column
+  @Column(DataType.STRING(50))
   public lastName: string;
 }
