@@ -1,4 +1,5 @@
 import { Op, Options } from 'sequelize';
+import { Logger } from '@nestjs/common';
 
 type DatabaseConfig = {
   development: Options;
@@ -12,7 +13,7 @@ const commonConfig: Options = {
   host: 'localhost',
   port: 5432,
   dialect: 'postgres',
-  logging: false,
+  logging: (message: string) => Logger.log(message, 'DataBase'),
   operatorsAliases: Op
 };
 

@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { Logger } from '@nestjs/common';
 
 import { swaggerSetup } from './swagger';
 import { AppModule } from './app.module';
@@ -16,9 +17,7 @@ const bootstrap = async (port: string | number = 3000): Promise<void> => {
 
   await app.listen(port);
 
-  // eslint-disable-next-line no-console
-  console.log(`Api is running on: ${ await app.getUrl() }`);
+  Logger.log(`Server is running on: ${ await app.getUrl() }`, 'NestApplication');
 };
 
-// eslint-disable-next-line no-console
-bootstrap().catch(console.error);
+bootstrap().catch(Logger.error);
