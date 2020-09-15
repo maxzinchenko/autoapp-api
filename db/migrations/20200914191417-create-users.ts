@@ -1,5 +1,7 @@
+import Sequelize, { QueryInterface } from 'sequelize';
+
 export default {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface: QueryInterface) => {
     await queryInterface.createTable('users', {
       id: {
         type: Sequelize.UUID,
@@ -51,7 +53,7 @@ export default {
     });
   },
 
-  down: async queryInterface => {
+  down: async (queryInterface: QueryInterface) => {
     await queryInterface.dropTable('users');
   }
 };
