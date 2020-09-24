@@ -1,4 +1,4 @@
-# AutoApp Api.
+# AutoApp Api
 
 Using the [Nest](https://github.com/nestjs/nest) framework with [Sequelize](https://github.com/sequelize/sequelize) ORM.
 
