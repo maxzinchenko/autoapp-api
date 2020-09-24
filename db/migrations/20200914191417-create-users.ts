@@ -15,12 +15,6 @@ export default {
         unique: true
       },
 
-      phone: {
-        type: Sequelize.STRING(13),
-        allowNull: false,
-        unique: true
-      },
-
       avatar: {
         type: Sequelize.STRING(300),
         allowNull: true

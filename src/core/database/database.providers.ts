@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize-typescript';
+import { ModelCtor, Model, Sequelize } from 'sequelize-typescript';
 
 import { databaseConfig } from '../../../config/database.config';
 
@@ -9,7 +9,6 @@ export const databaseProviders = [{
   useFactory: async () => {
     const sequelize = new Sequelize(databaseConfig[process.env.NODE_ENV]);
 
-    // @ts-ignore
     sequelize.addModels([User]);
 
     await sequelize.sync();
