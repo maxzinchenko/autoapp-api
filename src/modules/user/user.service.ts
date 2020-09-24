@@ -2,7 +2,7 @@ import { Inject, Injectable, NotFoundException, BadRequestException } from '@nes
 import { WhereOptions } from 'sequelize';
 
 import { User } from './user.entity';
-import { UserDTO } from './dto/users.dto';
+import { UserDTO } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -28,7 +28,7 @@ export class UserService {
     return instance;
   }
 
-  async findOne(where: WhereOptions<User>): Promise<User> {
+  async findOne(where: WhereOptions): Promise<User> {
     const instance = await this.userRepository.findOne({ where });
     if (!instance) {
       throw new NotFoundException('User not found');
@@ -37,7 +37,7 @@ export class UserService {
     return instance;
   }
 
-  async findAll(where?: WhereOptions<User>): Promise<User[]> {
+  async findAll(where?: WhereOptions): Promise<User[]> {
     const instances = await this.userRepository.findAll(where ? { where } : {});
 
     return instances;
@@ -54,9 +54,13 @@ export class UserService {
   }
 
   async update(id: string, data: UserDTO): Promise<User> {
-    const instance = await this.userRepository.update<User>(data, { where: { id } });
+    try {
+      const [_, instances] = await this.userRepository.update<User>(data, { where: { id } });
 
-    return instance[1][0];
+      return instances[0];
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 
   async destroy(id: string): Promise<{ id: string }> {

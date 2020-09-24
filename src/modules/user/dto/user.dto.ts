@@ -7,9 +7,6 @@ export class UserDTO {
   @ApiProperty()
   readonly username: string;
 
-  @ApiProperty()
-  readonly phone: string;
-
   @ApiProperty({ required: false })
   readonly avatar?: string;
 

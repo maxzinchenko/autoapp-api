@@ -13,7 +13,7 @@ const commonConfig: Options = {
   host: 'localhost',
   port: 5432,
   dialect: 'postgres',
-  logging: (message: string) => Logger.log(message, 'DataBase'),
+  logging: (message: string) => Logger.log(message, 'Sequelize'),
   operatorsAliases: Op
 };
 
